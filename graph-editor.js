@@ -1,18 +1,21 @@
-window.onload = function()
+
+function greditor(graphid = '')
 {
+
+    const unqid = graphid; 
     var graphModel;
-    if ( !localStorage.getItem( "graph-diagram-markup" ) )
+    if ( !localStorage.getItem( "graph-diagram-markup"+unqid ) )
     {
         graphModel = gd.model();
         graphModel.createNode().x( 0 ).y( 0 );
         save( formatMarkup() );
     }
-    if ( localStorage.getItem( "graph-diagram-style" ) )
+    if ( localStorage.getItem( "graph-diagram-style"+unqid ) )
     {
         d3.select( "link.graph-style" )
-            .attr( "href", localStorage.getItem( "graph-diagram-style" ) );
+            .attr( "href", localStorage.getItem( "graph-diagram-style"+unqid ) );
     }
-    graphModel = parseMarkup( localStorage.getItem( "graph-diagram-markup" ) );
+    graphModel = parseMarkup( localStorage.getItem( "graph-diagram-markup"+unqid ) );
 
     var svg = d3.select("#canvas")
         .append("svg:svg")
@@ -97,8 +100,8 @@ window.onload = function()
 
     function save( markup )
     {
-        localStorage.setItem( "graph-diagram-markup", markup );
-        localStorage.setItem( "graph-diagram-style", d3.select( "link.graph-style" ).attr( "href" ) );
+        localStorage.setItem( "graph-diagram-markup"+unqid, markup );
+        localStorage.setItem( "graph-diagram-style"+unqid, d3.select( "link.graph-style" ).attr( "href" ) );
     }
 
     var newNode = null;
@@ -406,7 +409,7 @@ window.onload = function()
         d3.select("link.graph-style")
             .attr("href", "style/" + selectedStyle);
 
-        graphModel = parseMarkup( localStorage.getItem( "graph-diagram-markup" ) );
+        graphModel = parseMarkup( localStorage.getItem( "graph-diagram-markup"+unqid ) );
         save(formatMarkup());
         draw();
         cancelModal();
